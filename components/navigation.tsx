@@ -39,7 +39,7 @@ export function Navigation() {
       className={cn(
         "fixed left-8 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-4 lg:flex",
         "transition-opacity duration-300",
-        isScrolled ? "opacity-100" : "opacity-0",
+        isScrolled ? "opacity-100" : "opacity-0 pointer-events-none",
       )}
     >
       {navItems.map((item) => (

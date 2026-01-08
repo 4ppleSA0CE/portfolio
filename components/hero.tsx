@@ -5,10 +5,10 @@ import { GithubIcon, LinkedinIcon, X, Mail, ArrowDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const socialLinks = [
-  { icon: GithubIcon, href: "https://github.com", label: "GitHub" },
-  { icon: LinkedinIcon, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: X, href: "https://twitter.com", label: "Twitter" },
-  { icon: Mail, href: "mailto:hello@example.com", label: "Email" },
+  { icon: GithubIcon, href: "https://github.com/4ppleSA0CE", label: "GitHub" },
+  { icon: LinkedinIcon, href: "https://www.linkedin.com/in/4derekwang/", label: "LinkedIn" },
+  { icon: X, href: "https://x.com/4derekwang", label: "Twitter" },
+  { icon: Mail, href: "mailto:dj4wang@uwaterloo.ca", label: "Email" },
 ]
 
 export function Hero() {
@@ -39,19 +39,19 @@ export function Hero() {
           <h1 className="text-5xl font-bold tracking-tight text-foreground md:text-7xl">Derek Wang</h1>
           <h2 className="mt-4 text-2xl font-medium text-primary md:text-3xl"></h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
-            Studying Computer Engineering at the University of Waterloo
+            Computer Engineering at the University of Waterloo
           </p>
         </div>
 
         {/* Social Links */}
-        <div className="mt-12 flex gap-4">
+        <div className="relative z-10 mt-12 flex gap-4">
           {socialLinks.map((social) => (
             <a
               key={social.label}
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-3 text-muted-foreground transition-colors duration-300 hover:text-primary"
+              className="group relative z-10 p-3 text-muted-foreground transition-colors duration-300 hover:text-primary"
               aria-label={social.label}
             >
               <social.icon className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
