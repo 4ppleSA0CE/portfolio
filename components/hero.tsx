@@ -1,13 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Github, Linkedin, Twitter, Mail, ArrowDown } from "lucide-react"
+import { GithubIcon, LinkedinIcon, X, Mail, ArrowDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const socialLinks = [
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: GithubIcon, href: "https://github.com", label: "GitHub" },
+  { icon: LinkedinIcon, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: X, href: "https://twitter.com", label: "Twitter" },
   { icon: Mail, href: "mailto:hello@example.com", label: "Email" },
 ]
 
@@ -36,10 +36,10 @@ export function Hero() {
             transform: `translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px)`,
           }}
         >
-          <h1 className="text-5xl font-bold tracking-tight text-foreground md:text-7xl">Alex Rivera</h1>
-          <h2 className="mt-4 text-2xl font-medium text-primary md:text-3xl">Full Stack Developer</h2>
+          <h1 className="text-5xl font-bold tracking-tight text-foreground md:text-7xl">Derek Wang</h1>
+          <h2 className="mt-4 text-2xl font-medium text-primary md:text-3xl"></h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
-            I build accessible, pixel-perfect digital experiences for the web.
+            Studying Computer Engineering at the University of Waterloo
           </p>
         </div>
 
@@ -78,25 +78,23 @@ export function Hero() {
       <div className="mt-16 flex flex-col justify-center lg:mt-0 lg:w-1/2 lg:pl-16">
         <div className="space-y-6 text-lg leading-relaxed text-muted-foreground">
           <p>
-            I'm a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful
-            design with robust engineering.
+          I am an engineer driven by the pursuit of reliability. I build robust ecosystems where technical complexity is transformed into a seamless, 
+          intuitive experience. My goal is simple: create solutions that just work.
           </p>
           <p>
-            My favorite work lies at the intersection of design and development, creating experiences that not only look
-            great but are meticulously built for <span className="font-medium text-foreground">performance</span> and{" "}
-            <span className="font-medium text-foreground">usability</span>.
+          My favorite work lies at the intersection of perception and control, creating adaptive behaviors that not only navigate complex environments
+           but are meticulously built for <span className="font-medium text-foreground">efficiency</span> and <span className="font-medium text-foreground">
+            real-time performance</span>.
           </p>
           <p>
-            Currently, I'm a Senior Developer at{" "}
-            <a href="#" className="font-medium text-primary hover:underline">
-              TechCorp
+            Currently, I'm contributing to developing at{" "}
+            <a href="https://www.watonomous.ca/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">
+              WATonomous
             </a>
-            , specializing in building scalable web applications. I contribute to the creation and maintenance of UI
-            components that power our platform.
+            , coding autonomous rovers.
           </p>
           <p>
-            In my spare time, I'm usually exploring new technologies, contributing to open source, or enjoying a good
-            cup of coffee while reading about the latest in web development.
+            In my spare time, you can find me on the badminton court, listening to music, or just walking around.
           </p>
         </div>
 

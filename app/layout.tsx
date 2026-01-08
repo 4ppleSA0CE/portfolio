@@ -8,10 +8,10 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Alex Rivera | Full Stack Developer",
+  title: "Derek Wang Portfolio",
   description:
-    "Full Stack Developer specializing in building exceptional digital experiences. Explore my portfolio of projects and experience.",
-  keywords: ["developer", "portfolio", "full stack", "react", "next.js", "web development"],
+    "Portfolio",
+  keywords: ["developer", "portfolio"],
     generator: 'v0.app'
 }
 
