@@ -1,89 +1,80 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Github, Folder } from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 
 const featuredProjects = [
   {
-    title: "E-Commerce Platform",
+    title: "Coffee Chat Scheduler",
     description:
-      "A full-stack e-commerce solution with real-time inventory management, payment processing, and an admin dashboard. Built with performance and scalability in mind.",
-    technologies: ["Next.js", "TypeScript", "Stripe", "PostgreSQL", "Redis"],
-    github: "#",
-    live: "#",
-    image: "/modern-ecommerce-dashboard-dark-theme.jpg",
+      "An interactive booking platform that links to my Google account, allowing users to view available time slots and schedule coffee chats with me, with automatic calendar synchronization that adds events directly to their Google Calendar.",
+    technologies: ["React", "Python", "FastAPI", "PostgreSQL", "Google Calendar API", "Git"],
+    github: "https://github.com/4ppleSA0CE/coffee-chat-scheduler",
+    live: "https://bookacoffeechat.vercel.app/",
+    image: "/coffee-chat-scheduler.png",
   },
   {
-    title: "Task Management App",
+    title: "Autonomous Vehicle Control System",
     description:
-      "A collaborative task management application featuring real-time updates, drag-and-drop functionality, and team workspaces. Integrates with popular tools.",
-    technologies: ["React", "Node.js", "Socket.io", "MongoDB", "Docker"],
-    github: "#",
-    live: "#",
-    image: "/task-management-kanban-board-dark-theme.jpg",
-  },
-  {
-    title: "AI Content Generator",
-    description:
-      "An AI-powered content generation tool that helps create blog posts, social media content, and marketing copy using advanced language models.",
-    technologies: ["Python", "FastAPI", "OpenAI", "React", "TailwindCSS"],
-    github: "#",
-    live: "#",
-    image: "/ai-content-generator-dark.png",
+      "A self-navigating robotics system that uses LiDAR sensors to map its surroundings in real-time, calculates optimal paths around obstacles, and autonomously navigates to target destinations with precision.",
+    technologies: ["C++", "ROS2", "Docker", "CMake", "Foxglove"],
+    github: "https://github.com/4ppleSA0CE/wato_asd_training",
+    live: "https://www.youtube.com/watch?v=X-JIZ522HMU",
+    image: "/autonomous-vehicle-control.png",
   },
 ]
 
-const otherProjects = [
-  {
-    title: "Weather Dashboard",
-    description: "A beautiful weather application with 7-day forecasts and location-based updates.",
-    technologies: ["React", "OpenWeather API", "Chart.js"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Markdown Editor",
-    description: "A real-time markdown editor with live preview and export functionality.",
-    technologies: ["Vue.js", "Marked.js", "LocalStorage"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Crypto Tracker",
-    description: "Real-time cryptocurrency price tracker with portfolio management.",
-    technologies: ["Next.js", "CoinGecko API", "Chart.js"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Recipe Finder",
-    description: "Search and save recipes with nutritional information and meal planning.",
-    technologies: ["React", "Spoonacular API", "Firebase"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "URL Shortener",
-    description: "A fast URL shortening service with click analytics and custom aliases.",
-    technologies: ["Node.js", "Redis", "PostgreSQL"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Portfolio Template",
-    description: "A customizable portfolio template for developers and designers.",
-    technologies: ["Next.js", "TailwindCSS", "Framer Motion"],
-    github: "#",
-    live: "#",
-  },
-]
+// const otherProjects = [
+//   {
+//     title: "Fruit Ninja AI",
+//     description: "Architected and implemented an automated computer vision pipeline using YOLO11n object detection, achieving 90% precision, 87% recall, and 0.89 F1 score with 0.92 AUC in fruit classification across 8 fruit categories. Built comprehensive dataset of 816 images (514 training, 302 testing), optimizing model performance through data augmentation techniques.",
+//     technologies: ["Python", "YOLO11", "OpenCV", "PyTorch"],
+//     github: "https://github.com/4ppleSA0CE/fruit-ninja-ai",
+//     live: "#",
+//   },
+//   {
+//     title: "Leetcode Daily Challenge",
+//     description: "On a mission to solve every leetcode daily challenge. Maintaining consistent practice and documenting solutions.",
+//     technologies: ["C++"],
+//     github: "https://github.com/4ppleSA0CE/Leetcode-Daily",
+//     live: "#",
+//   },
+//   {
+//     title: "TTC Escape",
+//     description: "Puzzle style game built for the GMTK 2025 Game Jam. Theme was 'loops'. A collaborative game development project.",
+//     technologies: ["C#", "Unity", "Git"],
+//     github: "https://github.com/4ppleSA0CE/GMTKgamejam",
+//     live: "#",
+//   },
+//   {
+//     title: "Blackjack Game",
+//     description: "Blackjack game built with GUI in Java. Built for a take-home assignment job application.",
+//     technologies: ["Java"],
+//     github: "https://github.com/4ppleSA0CE/Blackjack",
+//     live: "#",
+//   },
+//   {
+//     title: "WebTyper",
+//     description: "Scrapes the words from a website and displays them in a typing game. Tracks past statistics such as WPM, accuracy, and total times played.",
+//     technologies: ["JavaScript", "HTML"],
+//     github: "https://github.com/4ppleSA0CE/WebTyper",
+//     live: "#",
+//   },
+//   {
+//     title: "Personal Website",
+//     description: "Personal website built to capture my projects and showcase my skills and growth.",
+//     technologies: ["TypeScript", "HTML", "Tailwind CSS", "JavaScript"],
+//     github: "https://github.com/4ppleSA0CE/4ppleSA0CE.github.io",
+//     live: "https://4pplesa0ce.github.io",
+//   },
+// ]
 
 export function Projects() {
   const ref = useRef<HTMLElement>(null)
   const isInView = useInView(ref, { threshold: 0.1 })
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null)
+  // const [hoveredProject, setHoveredProject] = useState<number | null>(null)
 
   return (
     <section ref={ref} id="projects" className="min-h-screen px-6 py-24 lg:px-24">
@@ -141,18 +132,24 @@ export function Projects() {
                 <div className="flex gap-4">
                   <a
                     href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                     aria-label={`View ${project.title} on GitHub`}
                   >
                     <Github className="h-5 w-5" />
                   </a>
-                  <a
-                    href={project.live}
-                    className="text-muted-foreground transition-colors hover:text-primary"
-                    aria-label={`View ${project.title} live site`}
-                  >
-                    <ExternalLink className="h-5 w-5" />
-                  </a>
+                  {project.live && project.live !== "#" && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground transition-colors hover:text-primary"
+                      aria-label={`View ${project.title} live site`}
+                    >
+                      <ExternalLink className="h-5 w-5" />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -160,7 +157,7 @@ export function Projects() {
         </div>
 
         {/* Other Projects */}
-        <h3
+        {/* <h3
           className={cn(
             "mb-8 mt-24 text-center text-2xl font-bold text-foreground transition-all duration-500",
             isInView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
@@ -187,18 +184,24 @@ export function Projects() {
                 <div className="flex gap-3">
                   <a
                     href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-muted-foreground transition-colors hover:text-primary"
                     aria-label={`View ${project.title} on GitHub`}
                   >
                     <Github className="h-5 w-5" />
                   </a>
-                  <a
-                    href={project.live}
-                    className="text-muted-foreground transition-colors hover:text-primary"
-                    aria-label={`View ${project.title} live site`}
-                  >
-                    <ExternalLink className="h-5 w-5" />
-                  </a>
+                  {project.live && project.live !== "#" && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground transition-colors hover:text-primary"
+                      aria-label={`View ${project.title} live site`}
+                    >
+                      <ExternalLink className="h-5 w-5" />
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -216,7 +219,7 @@ export function Projects() {
               </ul>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   )
