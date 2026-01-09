@@ -7,40 +7,40 @@ import { ExternalLink } from "lucide-react"
 
 const experiences = [
   {
-    period: "2024 — Present",
-    title: "Senior Full Stack Developer",
-    company: "TechCorp",
-    companyUrl: "#",
+    period: "Sep 2025 — Present",
+    title: "Autonomous Self Driving Software Engineer",
+    company: "WATonomous",
+    companyUrl: "https://www.watonomous.ca/",
     description:
-      "Build and maintain critical components used to construct the platform's frontend. Work closely with cross-functional teams to implement and advocate for best practices in web development.",
-    technologies: ["React", "TypeScript", "Next.js", "GraphQL", "AWS"],
+      "Autonomous Rovers in collab with UWaterloo Robotics Team(UWRT). Developing perception and navigation systems for autonomous vehicles.",
+    technologies: ["C++", "ROS2", "Docker", "CMake", "Foxglove"],
   },
   {
-    period: "2022 — 2024",
-    title: "Full Stack Developer",
-    company: "StartupXYZ",
-    companyUrl: "#",
+    period: "Aug 2025 — Present",
+    title: "Autonomy Developer",
+    company: "Waterloo Aerial Robotics Group",
+    companyUrl: "https://www.uwarg.com/",
     description:
-      "Developed and shipped highly interactive web applications for various clients. Led the development of a new product feature that increased user engagement by 40%.",
-    technologies: ["React", "Node.js", "PostgreSQL", "Docker", "Redis"],
+      "Hardware in the Loop(HITL) Simulation. Working on autonomous systems development and testing in simulated environments.",
+    technologies: ["Python", "MAVLink"],
   },
   {
-    period: "2020 — 2022",
-    title: "Frontend Developer",
-    company: "Digital Agency",
-    companyUrl: "#",
+    period: "Mar 2024 — Aug 2025",
+    title: "Youth Badminton Instructor",
+    company: "City of Richmond Hill",
+    companyUrl: "https://www.richmondhill.ca/",
     description:
-      "Collaborated with designers to implement responsive and accessible user interfaces. Improved performance metrics and implemented A/B testing frameworks.",
-    technologies: ["JavaScript", "Vue.js", "SCSS", "Webpack", "Jest"],
+      "Taught Badminton @ Rouge Woods & Richvale Community Centers. Instructed youth in badminton fundamentals and techniques.",
+    technologies: [],
   },
   {
-    period: "2018 — 2020",
-    title: "Junior Developer",
-    company: "WebStudio",
+    period: "Sep 2024 — Jun 2025",
+    title: "Robotics Software Programmer - VEX Robotics Competition",
+    company: "Checkmate Robotics Club",
     companyUrl: "#",
     description:
-      "Assisted in developing client websites and web applications. Gained experience in full-stack development and agile methodologies.",
-    technologies: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+      "Coded routes for 16868C Rushdown Robotics, 5/80 in Ontario Provs Skills, Invited to 2025 V5RC Worlds. Developed autonomous navigation and control systems for competition robots.",
+    technologies: ["C++", "PID Controllers", "Odometry"],
   },
 ]
 
@@ -107,7 +107,9 @@ export function Experience() {
         </div>
 
         <a
-          href="/resume.pdf"
+          href="/resume_derek_wang.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
           className="mt-12 inline-flex items-center gap-2 text-lg font-medium text-foreground transition-colors hover:text-primary"
         >
           View Full Résumé

@@ -16,7 +16,7 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 400)
 
       const sections = navItems.map((item) => item.href.slice(1))
       const current = sections.find((section) => {

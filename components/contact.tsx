@@ -78,7 +78,7 @@ export function Contact() {
           )}
         >
           <div className="border-t border-border pt-12 pb-8 border-b">
-            <p className="text-sm text-muted-foreground">Designed & Built by Derek Wang</p>
+            <p className="text-sm text-muted-foreground">Produced with White Monsters</p>
             <div className="mt-6">
               <p className="mb-3 text-[10px] uppercase tracking-widest text-muted-foreground opacity-70">MADE WITH</p>
               <div className="flex flex-wrap justify-center items-center gap-4">

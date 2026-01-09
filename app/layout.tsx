@@ -13,7 +13,11 @@ export const metadata: Metadata = {
   description:
     "Portfolio",
   keywords: ["developer", "portfolio"],
-    generator: 'v0.app'
+  generator: 'v0.app',
+  icons: {
+    icon: '/derek.svg',
+    apple: '/derek.svg',
+  },
 }
 
 export default function RootLayout({
