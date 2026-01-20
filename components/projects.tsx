@@ -7,6 +7,15 @@ import { ExternalLink, Github } from "lucide-react"
 
 const featuredProjects = [
   {
+    title: "Silhouette",
+    description:
+      "A full-stack AI fashion advisor enabling real-time body annotation and outfit visualization. Orchestrates multiple AI services using Google Gemini for image generation and style recommendations, and Overshoot SDK for real-time video analysis, with async inference and prompt pipelines to generate personalized recommendations.",
+    technologies: ["React", "Next.js", "Express.js", "MongoDB", "Google Gemini", "Overshoot SDK"],
+    github: "https://github.com/Rababb-P/Silhouette",
+    live: "https://devpost.com/software/tbd-7j39dt",
+    image: "/silhouette.png",
+  },
+  {
     title: "Coffee Chat Scheduler",
     description:
       "An interactive booking platform that links to my Google account, allowing users to view available time slots and schedule coffee chats with me, with automatic calendar synchronization that adds events directly to their Google Calendar.",
@@ -101,12 +110,12 @@ export function Projects() {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               {/* Project Image */}
-              <div className="relative overflow-hidden rounded-lg">
-                <div className="absolute inset-0 bg-primary/20 opacity-60 transition-opacity duration-300 group-hover:opacity-0" />
+              <div className="relative aspect-video overflow-hidden rounded-lg bg-muted">
+                <div className="absolute inset-0 z-10 bg-primary/20 opacity-60 transition-opacity duration-300 group-hover:opacity-0" />
                 <img
                   src={project.image || "/placeholder.svg"}
                   alt={project.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
 
