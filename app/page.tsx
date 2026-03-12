@@ -9,27 +9,27 @@ const projectSnapshots = [
   {
     title: "Silhouette",
     meta: "Cursor for fashion",
-    href: "https://devpost.com/software/tbd-7j39dt",
+    href: "https://github.com/Rababb-P/Silhouette",
   },
   {
     title: "Reparo",
     meta: "AI repair assistant",
-    href: "https://github.com/4ppleSA0CE",
+    href: "https://github.com/Karan-Gupta07/RepairBOT",
   },
   {
     title: "Hierarchical Reasoning Retrieval",
     meta: "Structured LLM document search",
-    href: "https://github.com/4ppleSA0CE",
+    href: "https://github.com/4ppleSA0CE/Hierarchical-Reasoning-Retrieval",
   },
   {
     title: "Coffee Chat Scheduler",
     meta: "Book a chat (Calendar sync)",
-    href: "https://bookacoffeechat.vercel.app/",
+    href: "https://github.com/4ppleSA0CE/coffee-chat-scheduler",
   },
   {
     title: "Autonomous Vehicle Control System",
     meta: "LiDAR navigation (ROS2)",
-    href: "https://www.youtube.com/watch?v=X-JIZ522HMU",
+    href: "https://github.com/4ppleSA0CE/Autonomous-Vehicle-Control-System",
   },
 ]
 
