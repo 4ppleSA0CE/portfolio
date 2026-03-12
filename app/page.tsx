@@ -9,7 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background/85">
       <ThemeToggle />
       <Navigation />
       <Hero />

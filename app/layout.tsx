@@ -3,6 +3,8 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
+import { TetrisModeProvider } from "../components/tetris/mode"
+import { TetrisShell } from "../components/tetris/TetrisShell"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -33,7 +35,9 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem
         >
-          {children}
+          <TetrisModeProvider>
+            <TetrisShell>{children}</TetrisShell>
+          </TetrisModeProvider>
         </ThemeProvider>
         <Analytics />
       </body>
