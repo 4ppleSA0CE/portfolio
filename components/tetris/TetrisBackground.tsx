@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useTetrisMode } from "@/components/tetris/mode"
 import { TetrisEngine } from "@/components/tetris/engine/engine"
@@ -310,41 +309,19 @@ export function TetrisBackground() {
   const playOn = mode === "play"
 
   return (
-    <>
-      <div
-        className={cn(
-          "fixed inset-0 pointer-events-none",
-          "transition-opacity duration-300",
-          playOn ? "opacity-100 z-40" : "opacity-90 z-0",
-        )}
-        aria-hidden
-      >
-        <canvas ref={canvasRef} className="h-full w-full" />
-        <div className={cn("pointer-events-none fixed bottom-8 left-8 hidden gap-3 md:flex", playOn ? "z-50" : "z-0")}>
-          <Hud snapshot={snapshot} />
-        </div>
+    <div
+      className={cn(
+        "fixed inset-0 pointer-events-none",
+        "transition-opacity duration-300",
+        playOn ? "opacity-100 z-40" : "opacity-90 z-0",
+      )}
+      aria-hidden
+    >
+      <canvas ref={canvasRef} className="h-full w-full" />
+      <div className={cn("pointer-events-none fixed bottom-8 left-8 hidden gap-3 md:flex", playOn ? "z-50" : "z-0")}>
+        <Hud snapshot={snapshot} />
       </div>
-
-      {/* Discreet corner toggle */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => {
-          if (playOn) setMode("browse")
-          else setMode("play")
-        }}
-        className={cn(
-          "fixed bottom-8 right-8 z-50 h-9 w-9 rounded-full",
-          "bg-background/60 backdrop-blur-sm border border-border/40",
-          "transition-all duration-300",
-          playOn ? "opacity-100" : "opacity-40 hover:opacity-80",
-        )}
-        aria-label={playOn ? "Exit Tetris play mode" : "Enter Tetris play mode"}
-        title={playOn ? "Exit play mode" : "Play Tetris"}
-      >
-        <span className="text-xs font-semibold tracking-widest">{playOn ? "X" : "G"}</span>
-      </Button>
-    </>
+    </div>
   )
 }
 
