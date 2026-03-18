@@ -17,6 +17,11 @@ const projectSnapshots = [
     href: "https://github.com/Karan-Gupta07/RepairBOT",
   },
   {
+    title: "Github Repo Analyzer",
+    meta: "Understand any repo in minutes",
+    href: "https://github.com/4ppleSA0CE/Github-Repo-Analyzer",
+  },
+  {
     title: "Hierarchical Reasoning Retrieval",
     meta: "Structured LLM document search",
     href: "https://github.com/4ppleSA0CE/Hierarchical-Reasoning-Retrieval",
@@ -34,6 +39,11 @@ const projectSnapshots = [
 ]
 
 const experienceSnapshots = [
+  {
+    role: "Backend Software Engineer",
+    place: "Kenoxis Technologies INC",
+    period: "2026 — Present",
+  },
   {
     role: "Autonomous Self Driving Software Engineer",
     place: "WATonomous",
