@@ -4,6 +4,9 @@ import type { PieceType, Rotation, Vec2 } from "./types"
 // SRS uses specific rotation states around a fixed rotation center.
 export const PIECE_TYPES: PieceType[] = ["I", "O", "T", "S", "Z", "J", "L"]
 
+/** TETR.IO 7-bag source order before each shuffle (tetrio-bot-docs Piece_RNG.md). */
+export const TETRIO_BAG_ORDER: PieceType[] = ["Z", "L", "O", "S", "I", "J", "T"]
+
 type Rotations = Record<Rotation, Vec2[]>
 
 const r0: Rotation = 0

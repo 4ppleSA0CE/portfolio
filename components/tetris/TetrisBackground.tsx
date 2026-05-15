@@ -279,11 +279,7 @@ export function TetrisBackground() {
 
       if (key === "ArrowUp" || key === "KeyX") engine.step(0, { rotate: "cw" })
       if (key === "KeyZ") engine.step(0, { rotate: "ccw" })
-      if (key === "KeyA") {
-        // 180° rotation: two clockwise rotations with SRS kicks.
-        engine.step(0, { rotate: "cw" })
-        engine.step(0, { rotate: "cw" })
-      }
+      if (key === "KeyA") engine.step(0, { rotate180: true })
 
       if (key === "Space") engine.step(0, { hardDrop: true })
 
@@ -371,7 +367,9 @@ function Hud({ snapshot }: { snapshot: EngineSnapshot | null }) {
             <span className="text-[10px] font-semibold uppercase tracking-widest text-foreground/80">
               Combo
             </span>
-            <span className="text-sm font-semibold text-foreground">{snapshot.combo}</span>
+            <span className="text-sm font-semibold text-foreground tabular-nums">
+              {snapshot.combo > 0 ? snapshot.combo : ""}
+            </span>
           </div>
 
           {clearLabel ? (
@@ -391,6 +389,8 @@ function Hud({ snapshot }: { snapshot: EngineSnapshot | null }) {
         <span>Drop</span>
         <span className="text-foreground/70">Z/X/↑</span>
         <span>Rotate</span>
+        <span className="text-foreground/70">A</span>
+        <span>180</span>
         <span className="text-foreground/70">C/Shift</span>
         <span>Hold</span>
         <span className="text-foreground/70">R</span>

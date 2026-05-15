@@ -26,6 +26,18 @@ export type ClearInfo = {
     | "tspin-single"
     | "tspin-double"
     | "tspin-triple"
+    | "jspin-single"
+    | "jspin-double"
+    | "jspin-triple"
+    | "lspin-single"
+    | "lspin-double"
+    | "lspin-triple"
+    | "sspin-single"
+    | "sspin-double"
+    | "sspin-triple"
+    | "zspin-single"
+    | "zspin-double"
+    | "zspin-triple"
 }
 
 export type EngineConfig = {
@@ -58,6 +70,8 @@ export type EngineSnapshot = {
 export type Input = {
   moveX?: -1 | 1
   rotate?: "cw" | "ccw"
+  /** Atomic 180° (TETR.IO-style kick table), not two quarter turns. */
+  rotate180?: boolean
   softDrop?: boolean
   hardDrop?: boolean
   hold?: boolean

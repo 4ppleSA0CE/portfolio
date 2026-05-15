@@ -11,7 +11,7 @@ import type {
 } from "./types"
 import { SevenBagRng } from "./rng"
 import { rotateDir, SHAPES } from "./pieces"
-import { getKickOffsets } from "./srs"
+import { getKickOffsets, getKickOffsets180 } from "./srs"
 
 const DEFAULT_CONFIG: EngineConfig = {
   width: 10,
@@ -42,7 +42,11 @@ export class TetrisEngine {
   private gravityAccMs = 0
   private lockAccMs = 0
   private lockResets = 0
+
+  /** Last input was a successful rotation; cleared on horizontal move, hold, spawn, hard drop. */
   private lastActionWasRotate = false
+  /** Kick offset applied on the last successful rotation (piece space, +y down). */
+  private lastRotationKick: Vec2 | null = null
 
   constructor(config?: Partial<EngineConfig>) {
     this.config = { ...DEFAULT_CONFIG, ...(config ?? {}) }
@@ -52,7 +56,7 @@ export class TetrisEngine {
   }
 
   restart() {
-    this.rng = new SevenBagRng()
+    this.rng.reseed()
     this.board = makeBoard(this.config.width, this.config.height + this.config.hiddenRows)
     this.hold = null
     this.canHold = true
@@ -64,7 +68,7 @@ export class TetrisEngine {
     this.gravityAccMs = 0
     this.lockAccMs = 0
     this.lockResets = 0
-    this.lastActionWasRotate = false
+    this.clearSpinTracking()
     this.fillNextQueue()
     this.spawnNext()
   }
@@ -77,11 +81,10 @@ export class TetrisEngine {
 
     if (this.isGameOver) return
 
-    this.lastActionWasRotate = false
-
     if (input.hold) this.tryHold()
     if (input.moveX) this.tryMove({ x: input.moveX, y: 0 })
-    if (input.rotate) this.tryRotate(input.rotate)
+    if (input.rotate180) this.tryRotate180()
+    else if (input.rotate) this.tryRotate(input.rotate)
 
     if (input.hardDrop) {
       this.hardDrop()
@@ -129,6 +132,11 @@ export class TetrisEngine {
     }
   }
 
+  private clearSpinTracking() {
+    this.lastActionWasRotate = false
+    this.lastRotationKick = null
+  }
+
   private fillNextQueue() {
     while (this.nextQueue.length < this.config.nextCount + 7) {
       this.nextQueue.push(this.rng.next())
@@ -136,6 +144,7 @@ export class TetrisEngine {
   }
 
   private spawnNext() {
+    this.clearSpinTracking()
     this.fillNextQueue()
     const type = this.nextQueue.shift()
     if (!type) throw new Error("spawnNext: empty queue")
@@ -155,6 +164,7 @@ export class TetrisEngine {
   private tryHold() {
     if (!this.canHold) return
     this.canHold = false
+    this.clearSpinTracking()
 
     const current = this.active.type
     if (this.hold === null) {
@@ -179,6 +189,10 @@ export class TetrisEngine {
     }
     if (!this.isValid(moved)) return false
 
+    if (delta.x !== 0 && !opts?.isGravity) {
+      this.clearSpinTracking()
+    }
+
     const wasGrounded = this.isTouchingGround()
     this.active = moved
 
@@ -201,6 +215,32 @@ export class TetrisEngine {
         const wasGrounded = this.isTouchingGround()
         this.active = rotated
         this.lastActionWasRotate = true
+        this.lastRotationKick = { x: k.x, y: k.y }
+        if (wasGrounded) this.resetLockDelay()
+        return true
+      }
+    }
+
+    return false
+  }
+
+  private tryRotate180() {
+    if (this.active.type === "O") return false
+    const from = this.active.rotation
+    const to = (((from + 2) % 4) as Rotation)
+    const kicks = getKickOffsets180(this.active.type, from)
+
+    for (const k of kicks) {
+      const rotated: ActivePiece = {
+        type: this.active.type,
+        rotation: to,
+        pos: { x: this.active.pos.x + k.x, y: this.active.pos.y + k.y },
+      }
+      if (this.isValid(rotated)) {
+        const wasGrounded = this.isTouchingGround()
+        this.active = rotated
+        this.lastActionWasRotate = true
+        this.lastRotationKick = { x: k.x, y: k.y }
         if (wasGrounded) this.resetLockDelay()
         return true
       }
@@ -214,7 +254,6 @@ export class TetrisEngine {
     while (this.tryMove({ x: 0, y: 1 }, { isGravity: true })) {
       moved = true
     }
-    // Even if we couldn't move at all, hard drop means lock immediately.
     if (moved || this.isTouchingGround()) {
       this.lockPiece()
     }
@@ -229,7 +268,7 @@ export class TetrisEngine {
   private lockPiece() {
     placeOnBoard(this.board, this.active)
 
-    const clear = this.clearLinesAndDetectTSpin()
+    const clear = this.clearLinesAndClassify()
     this.lastClear = clear
 
     if (clear.lines > 0) {
@@ -242,7 +281,7 @@ export class TetrisEngine {
     this.spawnNext()
   }
 
-  private clearLinesAndDetectTSpin(): ClearInfo {
+  private clearLinesAndClassify(): ClearInfo {
     const fullRows: number[] = []
     for (let y = 0; y < this.board.length; y++) {
       if (this.board[y].every((c) => c !== null)) fullRows.push(y)
@@ -251,42 +290,97 @@ export class TetrisEngine {
     const lines = fullRows.length
     if (lines === 0) return { lines: 0, kind: "none" }
 
+    const lockedPiece = clonePiece(this.active)
+    const kindBase: ClearInfo["kind"] =
+      lines === 4 ? "tetris" : lines === 3 ? "triple" : lines === 2 ? "double" : "single"
+
+    const spinKind =
+      lines > 0 && this.lastActionWasRotate ? this.classifySpin(lockedPiece, lines as 1 | 2 | 3 | 4) : null
+
     for (const y of fullRows) {
       this.board.splice(y, 1)
       this.board.unshift(new Array(this.config.width).fill(null))
     }
 
-    const kind =
-      lines === 4 ? "tetris" : lines === 3 ? "triple" : lines === 2 ? "double" : "single"
+    return spinKind ? { lines, kind: spinKind } : { lines, kind: kindBase }
+  }
 
-    // Minimal T-spin detection (for display/event purposes):
-    // If last action was rotate and the piece is T, check 3/4 corner occupancy around pivot.
-    if (this.active.type === "T" && this.lastActionWasRotate) {
-      const pivot = { x: this.active.pos.x + 1, y: this.active.pos.y + 2 }
-      const corners = [
-        { x: pivot.x - 1, y: pivot.y - 1 },
-        { x: pivot.x + 1, y: pivot.y - 1 },
-        { x: pivot.x - 1, y: pivot.y + 1 },
-        { x: pivot.x + 1, y: pivot.y + 1 },
-      ]
+  private classifySpin(locked: ActivePiece, lines: 1 | 2 | 3 | 4): ClearInfo["kind"] | null {
+    const t = locked.type
 
-      let blocked = 0
-      for (const c of corners) {
-        if (c.x < 0 || c.x >= this.config.width || c.y < 0 || c.y >= this.board.length) {
-          blocked++
-        } else if (this.board[c.y][c.x] !== null) {
-          blocked++
-        }
-      }
-
-      if (blocked >= 3) {
-        if (lines === 1) return { lines, kind: "tspin-single" }
-        if (lines === 2) return { lines, kind: "tspin-double" }
-        if (lines === 3) return { lines, kind: "tspin-triple" }
-      }
+    if (t === "T") {
+      return this.classifyTSpin(locked, lines)
     }
 
-    return { lines, kind }
+    if (t === "J" || t === "L" || t === "S" || t === "Z") {
+      if (lines === 4) return null
+      if (!this.isImmobileOnBoard(locked, this.board)) return null
+      return this.allSpinKind(t, lines as 1 | 2 | 3)
+    }
+
+    return null
+  }
+
+  private classifyTSpin(locked: ActivePiece, lines: number): ClearInfo["kind"] | null {
+    const pivot = { x: locked.pos.x + 1, y: locked.pos.y + 2 }
+    const corners = [
+      { x: pivot.x - 1, y: pivot.y - 1 },
+      { x: pivot.x + 1, y: pivot.y - 1 },
+      { x: pivot.x - 1, y: pivot.y + 1 },
+      { x: pivot.x + 1, y: pivot.y + 1 },
+    ]
+
+    let blocked = 0
+    for (const c of corners) {
+      if (this.isBlockedForSpin(c)) blocked++
+    }
+
+    if (blocked < 3) return null
+
+    const front = tFrontCornerWorld(pivot, locked.rotation)
+    const frontCount = front.filter((c) => this.isBlockedForSpin(c)).length
+    const kick = this.lastRotationKick
+    const isFinOffset =
+      kick !== null && Math.abs(kick.x) === 1 && Math.abs(kick.y) === 2
+
+    const isMini = !(frontCount >= 2 || isFinOffset)
+
+    if (lines === 4) return "tetris"
+    if (lines === 3) {
+      return isMini ? "tspin-mini" : "tspin-triple"
+    }
+    if (lines === 2) {
+      return isMini ? "tspin-mini" : "tspin-double"
+    }
+    return isMini ? "tspin-mini" : "tspin-single"
+  }
+
+  private allSpinKind(t: "J" | "L" | "S" | "Z", lines: 1 | 2 | 3): ClearInfo["kind"] {
+    const letter = t.toLowerCase() as "j" | "l" | "s" | "z"
+    if (lines === 1) return `${letter}spin-single` as ClearInfo["kind"]
+    if (lines === 2) return `${letter}spin-double` as ClearInfo["kind"]
+    return `${letter}spin-triple` as ClearInfo["kind"]
+  }
+
+  private isBlockedForSpin(c: Vec2): boolean {
+    if (c.x < 0 || c.x >= this.config.width || c.y < 0 || c.y >= this.board.length) return true
+    return this.board[c.y][c.x] !== null
+  }
+
+  /** Piece cannot move L, R, or D on this board (All-Mini+ immobile). */
+  private isImmobileOnBoard(piece: ActivePiece, board: Board): boolean {
+    for (const d of [
+      { x: -1, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+    ]) {
+      const test: ActivePiece = {
+        ...piece,
+        pos: { x: piece.pos.x + d.x, y: piece.pos.y + d.y },
+      }
+      if (this.isValidOnBoard(test, board)) return false
+    }
+    return true
   }
 
   private isTouchingGround() {
@@ -298,13 +392,17 @@ export class TetrisEngine {
   }
 
   private isValid(piece: ActivePiece) {
+    return this.isValidOnBoard(piece, this.board)
+  }
+
+  private isValidOnBoard(piece: ActivePiece, board: Board) {
     const cells = SHAPES[piece.type][piece.rotation]
     for (const c of cells) {
       const x = piece.pos.x + c.x
       const y = piece.pos.y + c.y
       if (x < 0 || x >= this.config.width) return false
-      if (y < 0 || y >= this.board.length) return false
-      if (this.board[y][x] !== null) return false
+      if (y < 0 || y >= board.length) return false
+      if (board[y][x] !== null) return false
     }
     return true
   }
@@ -338,3 +436,30 @@ function clonePiece(p: ActivePiece): ActivePiece {
   return { type: p.type, rotation: p.rotation, pos: { x: p.pos.x, y: p.pos.y } }
 }
 
+/** Two front corners of the 3×3 around T pivot, toward the T stem (TetrisWiki T-Spin). */
+function tFrontCornerWorld(pivot: Vec2, rotation: Rotation): Vec2[] {
+  switch (rotation) {
+    case 0:
+      return [
+        { x: pivot.x - 1, y: pivot.y - 1 },
+        { x: pivot.x + 1, y: pivot.y - 1 },
+      ]
+    case 1:
+      return [
+        { x: pivot.x + 1, y: pivot.y - 1 },
+        { x: pivot.x + 1, y: pivot.y + 1 },
+      ]
+    case 2:
+      return [
+        { x: pivot.x - 1, y: pivot.y + 1 },
+        { x: pivot.x + 1, y: pivot.y + 1 },
+      ]
+    case 3:
+      return [
+        { x: pivot.x - 1, y: pivot.y - 1 },
+        { x: pivot.x - 1, y: pivot.y + 1 },
+      ]
+    default:
+      return []
+  }
+}
