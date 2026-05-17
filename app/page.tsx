@@ -13,6 +13,11 @@ const projectSnapshots = [
     href: "https://github.com/Rababb-P/Silhouette",
   },
   {
+    title: "Floaty",
+    meta: "MCP copilot with 68 tools for Float Financial",
+    href: "https://github.com/Parsa1ll/floaty",
+  },
+  {
     title: "Reparo",
     meta: "AI repair assistant",
     href: "https://github.com/Karan-Gupta07/RepairBOT",
