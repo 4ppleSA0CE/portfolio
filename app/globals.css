@@ -143,3 +143,17 @@ html {
 .typing-cursor {
   animation: blink 1s infinite;
 }
+
+html[data-intro="pending"] body,
+html[data-intro="running"] body {
+  overflow: hidden;
+}
+
+html[data-intro="running"] .tetris-intro-pulse {
+  opacity: 1 !important;
+  transition: opacity 600ms ease-out;
+}
+
+html[data-intro="done"] .tetris-intro-pulse {
+  transition: opacity 400ms ease-out;
+}

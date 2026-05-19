@@ -232,6 +232,7 @@ export function TetrisBackground() {
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
+      if (document.documentElement.dataset.intro !== "done") return
       if (isEditableTarget(e.target)) return
 
       const key = e.code
@@ -307,7 +308,7 @@ export function TetrisBackground() {
   return (
     <div
       className={cn(
-        "fixed inset-0 pointer-events-none",
+        "tetris-intro-pulse fixed inset-0 pointer-events-none",
         "transition-opacity duration-300",
         playOn ? "opacity-100 z-40" : "opacity-90 z-0",
       )}
