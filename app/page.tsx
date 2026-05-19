@@ -23,7 +23,7 @@ const projectSnapshots = [
     href: "https://github.com/Karan-Gupta07/RepairBOT",
   },
   {
-    title: "Github Repo Analyzer",
+    title: "GitHub Repo Analyzer",
     meta: "Understand any repo in minutes",
     href: "https://github.com/4ppleSA0CE/Github-Repo-Analyzer",
   },
