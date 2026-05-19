@@ -2,7 +2,7 @@
 
 export function Hero() {
   return (
-    <section className="mt-2 text-xs text-muted-foreground leading-relaxed">
+    <section className="mt-2 text-sm text-muted-foreground leading-relaxed">
       Robotics & Autonomy · Computer Engineering @ Waterloo
     </section>
   )

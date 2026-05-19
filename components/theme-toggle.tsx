@@ -31,13 +31,13 @@ export function ThemeToggle() {
         variant="ghost"
         size="icon"
         className={cn(
-          "fixed right-5 top-5 z-50 h-8 w-8 rounded-full",
+          "fixed right-5 top-5 z-50 h-9 w-9 rounded-full",
           "bg-background/80 backdrop-blur-sm border border-border/50",
           "hover:bg-muted transition-all duration-300"
         )}
         aria-label="Toggle theme"
       >
-        <Sun className="h-3.5 w-3.5" />
+        <Sun className="h-4 w-4" />
       </Button>
     )
   }
@@ -48,7 +48,7 @@ export function ThemeToggle() {
       size="icon"
       onClick={handleToggle}
       className={cn(
-        "fixed right-5 top-5 z-50 h-8 w-8 rounded-full",
+        "fixed right-5 top-5 z-50 h-9 w-9 rounded-full",
         "bg-background/80 backdrop-blur-sm border border-border/50",
         "hover:bg-muted transition-all duration-300",
         "opacity-70 hover:opacity-100"
@@ -60,9 +60,9 @@ export function ThemeToggle() {
         isFading ? "opacity-0 scale-90" : "opacity-100 scale-100"
       )}>
         {theme === "dark" ? (
-          <Sun className="h-3.5 w-3.5 transition-transform duration-300 hover:rotate-180" />
+          <Sun className="h-4 w-4 transition-transform duration-300 hover:rotate-180" />
         ) : (
-          <Moon className="h-3.5 w-3.5 transition-transform duration-300 hover:rotate-12" />
+          <Moon className="h-4 w-4 transition-transform duration-300 hover:rotate-12" />
         )}
       </div>
     </Button>

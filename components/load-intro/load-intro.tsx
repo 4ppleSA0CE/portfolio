@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 
 const INTRO_MS = 2100
 export const INTRO_EASE = "cubic-bezier(0.22, 1, 0.36, 1)"
-export const INTRO_DROP_OFFSET = "translateY(-24px)"
+export const INTRO_DROP_OFFSET = "translateY(-28px)"
 export const INTRO_DROP_DURATION_MS = 450
 
 export type IntroPhase = "preparing" | "running" | "complete"

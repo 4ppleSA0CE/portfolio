@@ -4,7 +4,7 @@ import { PIECE_COLORS } from "@/components/tetris/engine/pieces"
 import { introMotionStyle, INTRO_EASE, useLoadIntro } from "@/components/load-intro/load-intro"
 import { cn } from "@/lib/utils"
 
-const CELL = 8
+const CELL = 10
 const T_COLOR = PIECE_COLORS.T
 
 /** T tetromino (rotation 0): center top + full bottom row */
@@ -17,12 +17,12 @@ const T_PIECE_CELLS = [
 
 export function IntroBlocks({ className }: { className?: string }) {
   const { phase } = useLoadIntro()
-  const blockStyle = introMotionStyle(phase, 0, "translateY(-16px)", 400)
+  const blockStyle = introMotionStyle(phase, 0, "translateY(-18px)", 400)
 
   return (
     <span
       aria-hidden
-      className={cn("relative inline-block h-4 w-6 shrink-0", className)}
+      className={cn("relative inline-block h-5 w-[30px] shrink-0", className)}
       style={{
         ...blockStyle,
         opacity: phase === "complete" ? 0.4 : blockStyle.opacity,
