@@ -94,7 +94,7 @@ export default function Home() {
                 onClick={toggle}
                 title={playing ? "Click to exit Tetris" : undefined}
                 className={cn(
-                  "inline-flex items-center gap-2 transition-colors",
+                  "group inline-flex items-center gap-2 transition-colors",
                   playing
                     ? "text-foreground hover:text-foreground"
                     : "text-muted-foreground/70 hover:text-foreground",

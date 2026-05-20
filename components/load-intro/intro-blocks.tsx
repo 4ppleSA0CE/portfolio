@@ -18,24 +18,33 @@ const T_PIECE_CELLS = [
 export function IntroBlocks({ className }: { className?: string }) {
   const { phase } = useLoadIntro()
   const blockStyle = introMotionStyle(phase, 0, "translateY(-18px)", 400)
+  const isComplete = phase === "complete"
 
   return (
     <span
       aria-hidden
-      className={cn("relative inline-block h-5 w-[30px] shrink-0", className)}
+      className={cn(
+        "relative inline-block h-5 w-[30px] shrink-0",
+        isComplete && "opacity-40 transition-opacity duration-300 group-hover:opacity-100",
+        className,
+      )}
       style={{
-        ...blockStyle,
-        opacity: phase === "complete" ? 0.4 : blockStyle.opacity,
-        transition:
-          phase === "running"
-            ? `${blockStyle.transition}, opacity 300ms ${INTRO_EASE} 500ms`
-            : blockStyle.transition,
+        transform: blockStyle.transform,
+        ...(isComplete
+          ? {}
+          : {
+              opacity: blockStyle.opacity,
+              transition:
+                phase === "running"
+                  ? `${blockStyle.transition}, opacity 300ms ${INTRO_EASE} 500ms`
+                  : blockStyle.transition,
+            }),
       }}
     >
       {T_PIECE_CELLS.map((cell, i) => (
         <span
           key={i}
-          className="absolute rounded-[1px]"
+          className="absolute rounded-[1px] transition-[filter] duration-300 group-hover:brightness-110"
           style={{
             left: cell.x,
             top: cell.y,
