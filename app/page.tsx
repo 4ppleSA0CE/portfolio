@@ -6,10 +6,24 @@ import { IntroBlocks } from "@/components/load-intro/intro-blocks"
 import { IntroGate } from "@/components/load-intro/load-intro"
 import { Stagger } from "@/components/load-intro/stagger"
 import { useTetrisMode } from "@/components/tetris/mode"
+import { Typewriter } from "@/components/typewriter"
 import { cn } from "@/lib/utils"
 import { Github, Linkedin, FileText } from "lucide-react"
 
+const namePhrases = [
+  "Robotics",
+  "Competitive Programming",
+  "Tetris",
+  "McDonald's",
+  "Sleeping"
+] as const
+
 const projectSnapshots = [
+  {
+    title: "7-DOF Arm",
+    meta: "Screw-theory kinematics library, real-time MuJoCo sim, browser dashboard",
+    href: "https://github.com/4ppleSA0CE/7-DOF-Arm",
+  },
   {
     title: "Silhouette",
     meta: "Cursor for fashion",
@@ -30,16 +44,7 @@ const projectSnapshots = [
     meta: "Understand any repo in minutes",
     href: "https://github.com/4ppleSA0CE/Github-Repo-Analyzer",
   },
-  {
-    title: "Hierarchical Reasoning Retrieval",
-    meta: "Structured LLM document search",
-    href: "https://github.com/4ppleSA0CE/Hierarchical-Reasoning-Retrieval",
-  },
-  {
-    title: "Coffee Chat Scheduler",
-    meta: "Book a chat (Calendar sync)",
-    href: "https://github.com/4ppleSA0CE/coffee-chat-scheduler",
-  },
+  
   {
     title: "Autonomous Vehicle Control System",
     meta: "LiDAR navigation (ROS2)",
@@ -102,6 +107,11 @@ export default function Home() {
               >
                 <IntroBlocks className="mr-1" />
                 <span className="text-[13px] font-semibold">Derek Wang</span>
+                <span className="text-[11px] font-bold text-muted-foreground/70">loves</span>
+                <Typewriter
+                  className="text-[11px] font-bold text-muted-foreground/70"
+                  phrases={namePhrases}
+                />
                 {playing ? (
                   <span className="text-[9px] font-medium normal-case tracking-normal text-muted-foreground">
                     Exit

@@ -1,13 +1,11 @@
 "use client"
 
-import { PIECE_COLORS } from "@/components/tetris/engine/pieces"
 import { introMotionStyle, INTRO_EASE, useLoadIntro } from "@/components/load-intro/load-intro"
 import { cn } from "@/lib/utils"
 
 const CELL = 10
-const T_COLOR = PIECE_COLORS.T
+const T_COLOR = "#a78bfa"
 
-/** T tetromino (rotation 0): center top + full bottom row */
 const T_PIECE_CELLS = [
   { x: CELL, y: 0 },
   { x: 0, y: CELL },
