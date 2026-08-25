@@ -11,11 +11,11 @@ import { cn } from "@/lib/utils"
 import { Github, Linkedin, FileText } from "lucide-react"
 
 const namePhrases = [
-  "Robotics",
-  "Competitive Programming",
-  "Tetris",
-  "McDonald's",
-  "Sleeping"
+  "robotics",
+  "competitive programming",
+  "tetris",
+  "mcdonald's",
+  "sleeping"
 ] as const
 
 const projectSnapshots = [
