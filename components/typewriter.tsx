@@ -13,37 +13,44 @@ export function Typewriter({ phrases: rawPhrases, className }: { phrases: readon
   useEffect(() => {
     if (phrases.length < 2) return
 
+    let raf = 0
     let index = 0
-    let timer = 0
+    let len = (phrases[0] ?? "").length
+    let mode: "hold" | "back" | "type" = "hold"
+    let due = performance.now() + HOLD_MS
 
-    const schedule = (fn: () => void, ms: number) => {
-      timer = window.setTimeout(fn, ms)
-    }
-
-    const type = (current: string) => {
+    const step = () => {
       const full = phrases[index] ?? ""
-      if (current.length >= full.length) {
-        schedule(() => backspace(full), HOLD_MS)
-        return
+      if (mode === "hold") {
+        mode = "back"
+        due += BACK_MS
+      } else if (mode === "back") {
+        if (len > 0) {
+          len -= 1
+          due += BACK_MS
+        } else {
+          index = (index + 1) % phrases.length
+          mode = "type"
+          due += TYPE_MS
+        }
+      } else if (len < full.length) {
+        len += 1
+        due += TYPE_MS
+      } else {
+        mode = "hold"
+        due += HOLD_MS
       }
-      const next = full.slice(0, current.length + 1)
-      setText(next)
-      schedule(() => type(next), TYPE_MS)
     }
 
-    const backspace = (current: string) => {
-      if (current.length === 0) {
-        index = (index + 1) % phrases.length
-        schedule(() => type(""), TYPE_MS)
-        return
-      }
-      const next = current.slice(0, -1)
-      setText(next)
-      schedule(() => backspace(next), BACK_MS)
+    const tick = (now: number) => {
+      if (now - due > 1000) due = now
+      while (now >= due) step()
+      setText((phrases[index] ?? "").slice(0, len))
+      raf = requestAnimationFrame(tick)
     }
 
-    schedule(() => backspace(phrases[0] ?? ""), HOLD_MS)
-    return () => window.clearTimeout(timer)
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
   }, [phrases])
 
   return (
