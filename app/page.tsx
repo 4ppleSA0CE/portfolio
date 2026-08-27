@@ -107,9 +107,9 @@ export default function Home() {
               >
                 <IntroBlocks className="mr-1" />
                 <span className="text-[13px] font-semibold">Derek Wang</span>
-                <span className="text-[13px] font-semibold text-muted-foreground/70">loves</span>
+                <span className="text-[13px] font-semibold text-muted-foreground/70 transition-colors group-hover:text-foreground">loves</span>
                 <Typewriter
-                  className="text-[13px] font-semibold text-muted-foreground/70"
+                  className="text-[13px] font-semibold text-muted-foreground/70 transition-colors group-hover:text-foreground"
                   phrases={namePhrases}
                 />
                 {playing ? (
