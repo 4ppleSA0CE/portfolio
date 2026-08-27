@@ -313,9 +313,9 @@ function Hud({
         </div>
 
         <div className="min-w-28 space-y-2">
+          <StatRow label="PPS" value={pps.toFixed(1)} />
           <StatRow label="Lines" value={stats.lines} />
           <StatRow label="Pieces" value={stats.pieces} />
-          <StatRow label="Attack" value={stats.attack} />
           {stats.b2b > 0 ? <StatRow label="B2B" value={stats.b2b} /> : null}
           {stats.combo > 0 ? <StatRow label="Combo" value={stats.combo} /> : null}
         </div>
@@ -345,7 +345,7 @@ function Hud({
   )
 }
 
-function StatRow({ label, value }: { label: string; value: number }) {
+function StatRow({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="flex items-baseline justify-between gap-3">
       <span className="text-[10px] font-semibold uppercase tracking-widest text-foreground/80">
