@@ -48,18 +48,16 @@ type Stats = {
   queue: number[]
   lines: number
   pieces: number
-  measuredPps: number
   b2b: number
   combo: number
 }
 
-function readStats(snap: Snapshot, runMs: number): Stats {
+function readStats(snap: Snapshot): Stats {
   return {
     hold: snap.holdPiece,
     queue: Array.from(snap.queue),
     lines: snap.linesCleared,
     pieces: snap.piecesPlaced,
-    measuredPps: runMs > 0 ? snap.piecesPlaced / (runMs / 1000) : 0,
     b2b: snap.b2bCount,
     combo: snap.comboCount,
   }
@@ -79,9 +77,11 @@ export function BotBackground() {
   const lastPiecesRef = useRef(-1)
 
   const runMsRef = useRef(0)
+  const lastSecRef = useRef(-1)
   const [pps, setPps] = useState(PPS_DEFAULT)
   const [stats, setStats] = useState<Stats | null>(null)
   const [elapsed, setElapsed] = useState(0)
+  const [measuredPps, setMeasuredPps] = useState(0)
 
   useEffect(() => {
     modeRef.current = mode
@@ -100,7 +100,10 @@ export function BotBackground() {
     if (!bot) return
     const snap = bot.snapshot()
     lastPiecesRef.current = snap.piecesPlaced
-    setStats(readStats(snap, runMsRef.current))
+    setStats(readStats(snap))
+    const runSecs = runMsRef.current / 1000
+    setElapsed(Math.floor(runSecs))
+    setMeasuredPps(runSecs > 0 ? snap.piecesPlaced / runSecs : 0)
   }, [playOn])
 
   const applyPps = (value: number) => {
@@ -215,7 +218,7 @@ export function BotBackground() {
       if (!bot || disposed) return
       const last = lastTsRef.current ?? ts
       lastTsRef.current = ts
-      const dt = Math.min(50, Math.max(0, ts - last))
+      const dt = Math.min(250, Math.max(0, ts - last))
       virtualMsRef.current += dt * Math.min(1, ppsRef.current)
       runMsRef.current += dt
       bot.tick(virtualMsRef.current)
@@ -226,10 +229,15 @@ export function BotBackground() {
       }
       render(snap)
       if (modeRef.current === "play") {
-        setElapsed(Math.floor(runMsRef.current / 1000))
+        const secs = Math.floor(runMsRef.current / 1000)
+        if (secs !== lastSecRef.current) {
+          lastSecRef.current = secs
+          setElapsed(secs)
+          setMeasuredPps(secs > 0 ? snap.piecesPlaced / (runMsRef.current / 1000) : 0)
+        }
         if (snap.piecesPlaced !== lastPiecesRef.current) {
           lastPiecesRef.current = snap.piecesPlaced
-          setStats(readStats(snap, runMsRef.current))
+          setStats(readStats(snap))
         }
       }
       rafRef.current = requestAnimationFrame(tick)
@@ -269,7 +277,13 @@ export function BotBackground() {
       </div>
       {playOn ? (
         <>
-          <Hud stats={stats} pps={pps} elapsed={elapsed} onPpsChange={applyPps} />
+          <Hud
+            stats={stats}
+            pps={pps}
+            measuredPps={measuredPps}
+            elapsed={elapsed}
+            onPpsChange={applyPps}
+          />
           <a
             href="https://github.com/4ppleSA0CE/tetris-bot"
             target="_blank"
@@ -287,11 +301,13 @@ export function BotBackground() {
 function Hud({
   stats,
   pps,
+  measuredPps,
   elapsed,
   onPpsChange,
 }: {
   stats: Stats | null
   pps: number
+  measuredPps: number
   elapsed: number
   onPpsChange: (value: number) => void
 }) {
@@ -324,7 +340,7 @@ function Hud({
         </div>
 
         <div className="min-w-28 space-y-2">
-          <StatRow label="PPS" value={stats.measuredPps.toFixed(1)} />
+          <StatRow label="PPS" value={measuredPps.toFixed(1)} />
           <StatRow label="Lines" value={stats.lines} />
           <StatRow label="Pieces" value={stats.pieces} />
           {stats.b2b > 0 ? <StatRow label="B2B" value={stats.b2b} /> : null}
