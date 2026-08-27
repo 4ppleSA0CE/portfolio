@@ -133,11 +133,13 @@ export function BotBackground() {
       ctx.clearRect(0, 0, w, h)
 
       const isDark = document.documentElement.classList.contains("dark")
-      const maxBoardPxW = Math.min(w * 0.52, 520)
-      const maxBoardPxH = Math.min(h * 0.78, 780)
+      const margin = 40
       const cell = Math.max(
         10,
-        Math.floor(Math.min(maxBoardPxW / BOARD_COLS, maxBoardPxH / VISIBLE_ROWS)),
+        Math.min(
+          39,
+          Math.floor(Math.min((w - margin) / BOARD_COLS, (h - margin) / VISIBLE_ROWS)),
+        ),
       )
       const pxW = cell * BOARD_COLS
       const pxH = cell * VISIBLE_ROWS

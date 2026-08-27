@@ -8,7 +8,7 @@ import { Stagger } from "@/components/load-intro/stagger"
 import { useTetrisMode } from "@/components/tetris/mode"
 import { Typewriter } from "@/components/typewriter"
 import { cn } from "@/lib/utils"
-import { Github, Linkedin, FileText } from "lucide-react"
+import { Github, Linkedin } from "lucide-react"
 
 const namePhrases = [
   "robotics",
@@ -91,7 +91,7 @@ export default function Home() {
     <IntroGate>
       <main className="relative h-screen bg-background/85 text-foreground overflow-hidden">
         <ThemeToggle />
-        <div className="relative z-10 mx-auto flex h-full max-w-[720px] flex-col justify-center px-6 py-6 md:py-8 gap-7">
+        <div className="relative z-10 mx-auto flex h-full max-w-[720px] flex-col justify-center px-[clamp(0.5rem,calc((100vw_-_720px)/2),1.5rem)] py-6 md:py-8 gap-7">
           <Stagger step={6}>
             <header className="flex items-center justify-between text-[11px] font-medium uppercase tracking-[0.22em] text-muted-foreground/80">
               <button
@@ -231,16 +231,6 @@ export default function Home() {
                       title="LinkedIn"
                     >
                       <Linkedin className="h-4 w-4" />
-                    </a>
-                    <a
-                      href="/resume_derek_wang.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-full border border-border/60 p-2 text-muted-foreground hover:text-foreground hover:border-foreground/70 transition-colors"
-                      aria-label="Résumé"
-                      title="Résumé"
-                    >
-                      <FileText className="h-4 w-4" />
                     </a>
                   </div>
                 </div>
