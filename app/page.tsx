@@ -65,7 +65,7 @@ const experienceSnapshots = [
     period: "Mar 2026 – Present",
   },
   {
-    role: "Autonomous Self Driving Software Engineer",
+    role: "Autonomy Software Developer",
     place: "WATonomous",
     period: "Sept 2025 – Present",
     href: "https://www.watonomous.ca/",
